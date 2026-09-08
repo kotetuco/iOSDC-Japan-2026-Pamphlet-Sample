@@ -114,6 +114,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AB10CE110000000000000004 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				9C06E0982FF77EDF0010AF4A /* OnDeviceSummary */,
@@ -137,6 +138,7 @@
 			);
 			dependencies = (
 				9C06E0A72FF77EE10010AF4A /* PBXTargetDependency */,
+				AB10CE110000000000000005 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				9C06E0A82FF77EE10010AF4A /* OnDeviceSummaryTests */,
@@ -204,6 +206,7 @@
 			mainGroup = 9C06E08D2FF77EDF0010AF4A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9C06E0972FF77EDF0010AF4A /* Products */;
@@ -275,6 +278,14 @@
 			isa = PBXTargetDependency;
 			target = 9C06E0952FF77EDF0010AF4A /* OnDeviceSummary */;
 			targetProxy = 9C06E0B02FF77EE10010AF4A /* PBXContainerItemProxy */;
+		};
+		AB10CE110000000000000004 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = AB10CE110000000000000002 /* SwiftLintBuildToolPlugin */;
+		};
+		AB10CE110000000000000005 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = AB10CE110000000000000003 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -594,6 +605,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.65.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AB10CE110000000000000002 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		AB10CE110000000000000003 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9C06E08E2FF77EDF0010AF4A /* Project object */;
 }
