@@ -1,11 +1,13 @@
+import SwiftData
 import SwiftUI
 
-/// The application entry point for the sample app.
+/// サンプルアプリのエントリーポイント。
 @main
 struct OnDeviceSummaryApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
+        .modelContainer(for: LogEntry.self)
     }
 }
