@@ -144,7 +144,7 @@ static NSError *ODSMissingHeadersError(void) {
                              code:-2
                          userInfo:@{
     NSLocalizedDescriptionKey:
-        @"ExecuTorch の C++ ヘッダが見つかりません。samples/OnDeviceSummary/"
+        @"ExecuTorch の C++ ヘッダが見つかりません。OnDeviceSummary/"
         @"scripts/fetch_executorch_headers.sh を実行して再ビルドしてください。"
   }];
 }
