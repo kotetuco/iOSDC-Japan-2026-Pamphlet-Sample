@@ -114,7 +114,7 @@ nonisolated struct CSVParser: Sendable {
     }
 }
 
-private extension String {
+private nonisolated extension String {
     /// 末尾にあるWindows形式の改行コードの一部を取り除いた文字列。
     func trimmingTrailingCarriageReturn() -> String {
         hasSuffix("\r") ? String(dropLast()) : self
