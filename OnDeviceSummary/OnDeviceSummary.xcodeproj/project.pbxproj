@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9CBDA56930512DB5003BA791 /* backend_xnnpack in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E13A2FF8A4300010AF4A /* backend_xnnpack */; };
+		9CBDA56A30512DB5003BA791 /* executorch in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E13C2FF8A4300010AF4A /* executorch */; };
+		9CBDA56B30512DB5003BA791 /* executorch_llm in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E13E2FF8A4300010AF4A /* executorch_llm */; };
+		9CBDA56C30512DB5003BA791 /* kernels_llm in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E1462FF9A0000010AF4A /* kernels_llm */; };
+		9CBDA56D30512DB5003BA791 /* kernels_optimized in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E1402FF8A4300010AF4A /* kernels_optimized */; };
+		9CBDA56E30512DB5003BA791 /* kernels_quantized in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E1422FF8A4300010AF4A /* kernels_quantized */; };
+		9CBDA56F30512DB5003BA791 /* kernels_torchao in Frameworks */ = {isa = PBXBuildFile; productRef = 9C06E1442FF8A4300010AF4A /* kernels_torchao */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9C06E0A62FF77EE10010AF4A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +62,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CBDA56F30512DB5003BA791 /* kernels_torchao in Frameworks */,
+				9CBDA56E30512DB5003BA791 /* kernels_quantized in Frameworks */,
+				9CBDA56D30512DB5003BA791 /* kernels_optimized in Frameworks */,
+				9CBDA56C30512DB5003BA791 /* kernels_llm in Frameworks */,
+				9CBDA56B30512DB5003BA791 /* executorch_llm in Frameworks */,
+				9CBDA56A30512DB5003BA791 /* executorch in Frameworks */,
+				9CBDA56930512DB5003BA791 /* backend_xnnpack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,7 +461,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.OnDeviceSummary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "OnDeviceSummary/OnDeviceSummary-Bridging-Header.h";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -452,6 +468,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "OnDeviceSummary/OnDeviceSummary-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -483,7 +500,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.OnDeviceSummary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "OnDeviceSummary/OnDeviceSummary-Bridging-Header.h";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -491,6 +507,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "OnDeviceSummary/OnDeviceSummary-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -627,19 +644,6 @@
 				kind = branch;
 			};
 		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		9C06E13A2FF8A4300010AF4A /* backend_xnnpack */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = backend_xnnpack; };
-		9C06E13C2FF8A4300010AF4A /* executorch */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = executorch; };
-		9C06E13E2FF8A4300010AF4A /* executorch_llm */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = executorch_llm; };
-		9C06E1402FF8A4300010AF4A /* kernels_optimized */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_optimized; };
-		9C06E1422FF8A4300010AF4A /* kernels_quantized */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_quantized; };
-		9C06E1442FF8A4300010AF4A /* kernels_torchao */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_torchao; };
-		9C06E1462FF9A0000010AF4A /* kernels_llm */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_llm; };
-/* End XCSwiftPackageProductDependency section */
-
-/* Begin XCRemoteSwiftPackageReference section */
 		AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
@@ -651,6 +655,41 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9C06E13A2FF8A4300010AF4A /* backend_xnnpack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = backend_xnnpack;
+		};
+		9C06E13C2FF8A4300010AF4A /* executorch */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = executorch;
+		};
+		9C06E13E2FF8A4300010AF4A /* executorch_llm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = executorch_llm;
+		};
+		9C06E1402FF8A4300010AF4A /* kernels_optimized */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = kernels_optimized;
+		};
+		9C06E1422FF8A4300010AF4A /* kernels_quantized */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = kernels_quantized;
+		};
+		9C06E1442FF8A4300010AF4A /* kernels_torchao */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = kernels_torchao;
+		};
+		9C06E1462FF9A0000010AF4A /* kernels_llm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */;
+			productName = kernels_llm;
+		};
 		AB10CE110000000000000002 /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
