@@ -3,8 +3,10 @@ import SwiftUI
 /// Foundation Modelsの要約実行ボタンと利用不可時の理由を表示するセクション。
 struct EngineActionsSection: View {
     let isRunDisabled: Bool
-    let availability: EngineAvailability?
+    let foundationAvailability: EngineAvailability?
+    let execuTorchAvailability: EngineAvailability?
     let runFoundationModels: () -> Void
+    let runExecuTorch: () -> Void
 
     var body: some View {
         Section {
@@ -14,7 +16,16 @@ struct EngineActionsSection: View {
             }
             .disabled(isRunDisabled)
 
-            if case let .unavailable(reason) = availability {
+            Button(action: runExecuTorch) {
+                Label("ExecuTorchで要約", systemImage: "play.fill")
+                    .frame(maxWidth: .infinity)
+            }
+            .disabled(isRunDisabled)
+
+            if case let .unavailable(reason) = foundationAvailability {
+                Text(reason).font(.footnote).foregroundStyle(.secondary)
+            }
+            if case let .unavailable(reason) = execuTorchAvailability {
                 Text(reason).font(.footnote).foregroundStyle(.secondary)
             }
         }

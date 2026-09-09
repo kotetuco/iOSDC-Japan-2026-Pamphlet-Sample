@@ -8,11 +8,14 @@ struct SummaryTab: View {
     @Query(sort: \LogEntry.createdAt) private var entries: [LogEntry]
     @State private var selectedDate: Date?
     @State private var runState: EngineRunState = .idle
-    @State private var availability: EngineAvailability?
+    @State private var execuTorchState: EngineRunState = .idle
+    @State private var foundationAvailability: EngineAvailability?
+    @State private var execuTorchAvailability: EngineAvailability?
     @State private var activeRunID: UUID?
     @State private var summaryTask: Task<Void, Never>?
 
     private let engine = FoundationModelsSummarizer()
+    private let execuTorchEngine = ExecuTorchSummarizer()
 
     var body: some View {
         NavigationStack {
@@ -30,16 +33,24 @@ struct SummaryTab: View {
 
                 EngineActionsSection(
                     isRunDisabled: isRunDisabled,
-                    availability: availability,
-                    runFoundationModels: runFoundationModels
+                    foundationAvailability: foundationAvailability,
+                    execuTorchAvailability: execuTorchAvailability,
+                    runFoundationModels: runFoundationModels,
+                    runExecuTorch: runExecuTorch
                 )
 
                 Section("結果") {
                     ResultCard(engineName: engine.name, state: runState)
+                    ResultCard(engineName: execuTorchEngine.name, state: execuTorchState)
                 }
             }
-            .navigationTitle("要約")
-            .task { availability = await engine.availability }
+            .navigationTitle("要約比較")
+            .task {
+                async let foundation = engine.availability
+                async let execuTorch = execuTorchEngine.availability
+                foundationAvailability = await foundation
+                execuTorchAvailability = await execuTorch
+            }
             .onAppear(perform: selectFirstDateIfNeeded)
             .onChange(of: entries.count) { _, _ in selectFirstDateIfNeeded() }
             .onChange(of: selectedDate) { _, _ in resetResults() }
@@ -60,35 +71,56 @@ struct SummaryTab: View {
 
     private var inputText: String { SummaryPrompt.input(from: selectedEntries) }
 
-    private var isRunDisabled: Bool { inputText.isEmpty || runState.isRunning }
+    private var isRunDisabled: Bool {
+        inputText.isEmpty || runState.isRunning || execuTorchState.isRunning
+    }
 
     private func selectFirstDateIfNeeded() {
         if selectedDate == nil || selectedEntries.isEmpty { selectedDate = availableDates.first }
     }
 
     private func runFoundationModels() {
+        runEngine(engine, setState: { runState = $0 }, setAvailability: { foundationAvailability = $0 })
+    }
+
+    private func runExecuTorch() {
+        runEngine(
+            execuTorchEngine,
+            setState: { execuTorchState = $0 },
+            setAvailability: { execuTorchAvailability = $0 }
+        )
+    }
+
+    private func runEngine(
+        _ engine: some SummarizerEngine,
+        setState: @escaping (EngineRunState) -> Void,
+        setAvailability: @escaping (EngineAvailability) -> Void
+    ) {
         let input = inputText
         let runDate = selectedDate
         let runID = UUID()
         activeRunID = runID
-        runState = .running
+        setState(.running)
         summaryTask?.cancel()
         summaryTask = Task {
             do {
                 let currentAvailability = await engine.availability
                 try Task.checkCancellation()
                 guard activeRunID == runID, selectedDate == runDate else { return }
-                availability = currentAvailability
+                setAvailability(currentAvailability)
                 if case let .unavailable(reason) = currentAvailability {
-                    runState = .failure(reason)
+                    setState(.failure(reason))
                     return
                 }
-                runState = .success(try await engine.summarize(input))
+                let output = try await engine.summarize(input)
+                try Task.checkCancellation()
+                guard activeRunID == runID, selectedDate == runDate else { return }
+                setState(.success(output))
             } catch is CancellationError {
                 return
             } catch {
                 guard activeRunID == runID, selectedDate == runDate else { return }
-                runState = .failure(error.localizedDescription)
+                setState(.failure(error.localizedDescription))
             }
         }
     }
@@ -98,5 +130,6 @@ struct SummaryTab: View {
         summaryTask = nil
         activeRunID = nil
         runState = .idle
+        execuTorchState = .idle
     }
 }
