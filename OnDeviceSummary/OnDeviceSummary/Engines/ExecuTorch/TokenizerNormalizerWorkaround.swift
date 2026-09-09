@@ -44,6 +44,7 @@ enum TokenizerNormalizerWorkaround {
             }
 
             json["normalizer"] = NSNull()
+            removeUnsupportedLookahead(from: &json)
             let patched = try JSONSerialization.data(withJSONObject: json)
             try patched.write(to: destination, options: .atomic)
             print("ExecuTorch tokenizer: disabled broken NFC normalizer -> \(destination.lastPathComponent)")
@@ -52,6 +53,29 @@ enum TokenizerNormalizerWorkaround {
             print("ExecuTorch tokenizer: normalizer workaround failed (\(error)); using original tokenizer.json")
             return source
         }
+    }
+
+    /// SwiftPM版ExecuTorchのRE2が解釈できない負の先読みを取り除く。
+    /// Qwenのパターンでは直後に同じ「空白」の代替があるため、削除しても
+    /// それ以外のトークン分割規則は変わらない。
+    private static func removeUnsupportedLookahead(from json: inout [String: Any]) {
+        guard
+            var preTokenizer = json["pre_tokenizer"] as? [String: Any],
+            var preTokenizers = preTokenizer["pretokenizers"] as? [[String: Any]],
+            var split = preTokenizers.first,
+            var pattern = split["pattern"] as? [String: Any],
+            let regex = pattern["Regex"] as? String
+        else {
+            return
+        }
+
+        let unsupportedPattern = #"\s+(?!\S)|"#
+        guard regex.contains(unsupportedPattern) else { return }
+        pattern["Regex"] = regex.replacingOccurrences(of: unsupportedPattern, with: "")
+        split["pattern"] = pattern
+        preTokenizers[0] = split
+        preTokenizer["pretokenizers"] = preTokenizers
+        json["pre_tokenizer"] = preTokenizer
     }
 
     /// eos の定義を含む設定ファイル。HFTokenizer はトークナイザのパスと
