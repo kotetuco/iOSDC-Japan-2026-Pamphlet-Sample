@@ -161,7 +161,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
     }
 
     /// 失敗試行の生成時間も記事の計測対象（512トークン走り切りの検出）のためログに残す。
-    private static func logRetry(afterAttempt attemptIndex: Int, generationDuration: Duration) {
+    nonisolated private static func logRetry(afterAttempt attemptIndex: Int, generationDuration: Duration) {
         print(
             "[検証] ExecuTorch attempt \(attemptIndex + 1) "
                 + "パース失敗（生成 \(generationDuration.secondsText)）"
@@ -169,7 +169,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
         )
     }
 
-    private static func logRawFallback(generationDuration: Duration) {
+    nonisolated private static func logRawFallback(generationDuration: Duration) {
         print(
             "[検証] ExecuTorch 全\(attemptTemperatures.count)試行パース失敗"
                 + "（最終試行の生成 \(generationDuration.secondsText)）→ 生出力へフォールバック"
@@ -177,7 +177,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
     }
 
     /// 指定 temperature で 1 回だけ生成し、終端マーカー以降を除いたテキストを返す。
-    private static func runAttempt(
+    nonisolated private static func runAttempt(
         runner: UTF8SafeTextRunner,
         prompt: String,
         temperature: Double,

@@ -121,6 +121,13 @@
 			);
 			name = OnDeviceSummary;
 			packageProductDependencies = (
+				9C06E13A2FF8A4300010AF4A /* backend_xnnpack */,
+				9C06E13C2FF8A4300010AF4A /* executorch */,
+				9C06E13E2FF8A4300010AF4A /* executorch_llm */,
+				9C06E1462FF9A0000010AF4A /* kernels_llm */,
+				9C06E1402FF8A4300010AF4A /* kernels_optimized */,
+				9C06E1422FF8A4300010AF4A /* kernels_quantized */,
+				9C06E1442FF8A4300010AF4A /* kernels_torchao */,
 			);
 			productName = OnDeviceSummary;
 			productReference = 9C06E0962FF77EDF0010AF4A /* OnDeviceSummary.app */;
@@ -206,6 +213,7 @@
 			mainGroup = 9C06E08D2FF77EDF0010AF4A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */,
 				AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -609,6 +617,27 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pytorch/executorch.git";
+			requirement = {
+				branch = "swiftpm-1.3.1";
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9C06E13A2FF8A4300010AF4A /* backend_xnnpack */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = backend_xnnpack; };
+		9C06E13C2FF8A4300010AF4A /* executorch */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = executorch; };
+		9C06E13E2FF8A4300010AF4A /* executorch_llm */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = executorch_llm; };
+		9C06E1402FF8A4300010AF4A /* kernels_optimized */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_optimized; };
+		9C06E1422FF8A4300010AF4A /* kernels_quantized */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_quantized; };
+		9C06E1442FF8A4300010AF4A /* kernels_torchao */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_torchao; };
+		9C06E1462FF9A0000010AF4A /* kernels_llm */ = { isa = XCSwiftPackageProductDependency; package = 9C06E1382FF8A4070010AF4A /* XCRemoteSwiftPackageReference "executorch" */; productName = kernels_llm; };
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		AB10CE110000000000000001 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
