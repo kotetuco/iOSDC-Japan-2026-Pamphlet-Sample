@@ -56,11 +56,11 @@ ExecuTorch v1.3.1 の C++ HFTokenizer は tokenizer.json の NFC ノーマライ
 
 `OnDeviceSummary` は Xcode の synced folder なので、通常は追加のプロジェクト操作なしでバンドルされます。実機検証時に見つからない場合は、バンドル内配置がルート直下か `Models/` サブディレクトリかを確認してください。アプリ側は両方を検索します。
 
-## C++ ヘッダの取得（ビルド時に自動実行）
+## C++ ヘッダの取得
 
 アプリは v1.3.1 の ObjC ラッパーの UTF-8 破損（トークン境界でマルチバイト文字が欠落する）を回避するため、自作ブリッジ `UTF8SafeTextRunner` で C++ ランナーを直接呼び出します。ビルドには ExecuTorch の C++ ヘッダが必要です。
 
-ヘッダは Xcode ビルド時の Run Script フェーズ「Fetch ExecuTorch Headers」が自動で取得します。初回のみ clone が走るためビルドが数分延びます（オフラインだとこのフェーズが失敗します）。取得済みなら何もしません。手動で先に取得する場合は次を実行します。
+ヘッダはビルド前に次のスクリプトを実行して取得します。初回のみ clone が走るため数分かかります（オフラインでは実行できません）。取得済みなら何もしません。
 
 ```bash
 samples/OnDeviceSummary/scripts/fetch_executorch_headers.sh
