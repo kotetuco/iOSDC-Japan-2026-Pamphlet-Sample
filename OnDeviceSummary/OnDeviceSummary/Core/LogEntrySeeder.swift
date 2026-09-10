@@ -24,7 +24,7 @@ nonisolated enum LogEntrySeederError: Error, Equatable, LocalizedError, Sendable
 }
 
 /// CSVレコードからライフログを復元する処理。
-struct LogEntryRecordDecoder {
+nonisolated struct LogEntryRecordDecoder {
     /// 1件分のCSVレコードをライフログへ変換する。
     func decode(_ record: [String: String]) throws -> LogEntry {
         let idValue = try requiredValue(for: "id", in: record)
@@ -90,19 +90,20 @@ struct LogEntryRecordDecoder {
 }
 
 /// 初回起動時に公開用の架空ライフログをSwiftDataへ保存する処理。
-enum LogEntrySeeder {
-    /// 保存済みのライフログがない場合に限り、バンドル内のCSVを読み込む。
-    static func seedIfNeeded(into modelContext: ModelContext, bundle: Bundle = .main) throws {
+@ModelActor
+actor LogEntrySeeder {
+    /// 保存済みのライフログがない場合に限り、指定したCSVを読み込む。
+    func seedIfNeeded(from resourceURL: URL?) throws {
         let descriptor = FetchDescriptor<LogEntry>()
         guard try modelContext.fetchCount(descriptor) == 0 else {
             return
         }
 
-        guard let url = bundle.url(forResource: "dummy_2026_05", withExtension: "csv") else {
+        guard let resourceURL else {
             throw LogEntrySeederError.resourceNotFound
         }
 
-        let text = try String(contentsOf: url, encoding: .utf8)
+        let text = try String(contentsOf: resourceURL, encoding: .utf8)
         let records = try CSVParser().records(from: text)
         let decoder = LogEntryRecordDecoder()
         let entries = try records.map(decoder.decode)

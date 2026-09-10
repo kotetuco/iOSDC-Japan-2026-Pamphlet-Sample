@@ -27,7 +27,9 @@ struct RootView: View {
     @Sendable
     private func seedSampleDataIfNeeded() async {
         do {
-            try LogEntrySeeder.seedIfNeeded(into: modelContext)
+            let resourceURL = Bundle.main.url(forResource: "dummy_2026_05", withExtension: "csv")
+            let seeder = LogEntrySeeder(modelContainer: modelContext.container)
+            try await seeder.seedIfNeeded(from: resourceURL)
         } catch {
             seedError = error.localizedDescription
             isSeedErrorAlertPresented = true
