@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import OnDeviceSummary
 
@@ -26,5 +27,21 @@ struct ExecuTorchSummarizerTests {
             return
         }
         #expect(reason.contains("models/README.md"))
+    }
+
+    @Test func reportsMissingRuntimeHeaders() async {
+        let resourceURL = FileManager.default.temporaryDirectory.appendingPathComponent("test-resource")
+        let summarizer = ExecuTorchSummarizer(
+            locateResource: { _, _ in resourceURL },
+            isRuntimeAvailable: { false }
+        )
+
+        let availability = await summarizer.availability
+
+        guard case let .unavailable(reason) = availability else {
+            Issue.record("Expected missing runtime headers to be unavailable")
+            return
+        }
+        #expect(reason.contains("fetch_executorch_headers.sh"))
     }
 }

@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 NS_SWIFT_NAME(UTF8SafeTextRunner)
 @interface ODSUTF8SafeTextRunner : NSObject
 
+/// 実際の ExecuTorch C++ ランナーを利用できる場合は YES。
++ (BOOL)isRuntimeAvailable;
+
 - (instancetype)initWithModelPath:(NSString *)modelPath
                     tokenizerPath:(NSString *)tokenizerPath
                     specialTokens:(NSArray<NSString *> *)specialTokens

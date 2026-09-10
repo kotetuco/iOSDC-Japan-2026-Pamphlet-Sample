@@ -28,6 +28,10 @@ struct ExecuTorchSummarizer: SummarizerEngine {
     ExecuTorch SwiftPM 依存がまだ追加されていません。Xcode で \
     https://github.com/pytorch/executorch.git の swiftpm-1.3.1 ブランチを app ターゲットへ追加してください。
     """
+    private static let missingHeadersMessage = """
+    ExecuTorch の C++ ヘッダが見つかりません。OnDeviceSummary/scripts/fetch_executorch_headers.sh を実行して、\
+    再ビルドしてください。
+    """
 
     /// Matches FoundationModelsSummarizer so the retry strategy is shared and
     /// only the structure-guarantee mechanism differs between the engines.
@@ -41,9 +45,14 @@ struct ExecuTorchSummarizer: SummarizerEngine {
     }
 
     private let locateResource: @Sendable (String, String) -> URL?
+    private let isRuntimeAvailable: @Sendable () -> Bool
 
-    nonisolated init(locateResource: @escaping @Sendable (String, String) -> URL? = Self.defaultLocateResource) {
+    nonisolated init(
+        locateResource: @escaping @Sendable (String, String) -> URL? = Self.defaultLocateResource,
+        isRuntimeAvailable: @escaping @Sendable () -> Bool = { UTF8SafeTextRunner.isRuntimeAvailable() }
+    ) {
         self.locateResource = locateResource
+        self.isRuntimeAvailable = isRuntimeAvailable
     }
 
     var availability: EngineAvailability {
@@ -53,6 +62,9 @@ struct ExecuTorchSummarizer: SummarizerEngine {
             }
 
             #if canImport(ExecuTorchLLM)
+            guard isRuntimeAvailable() else {
+                return .unavailable(reason: Self.missingHeadersMessage)
+            }
             return .available
             #else
             return .unavailable(reason: Self.missingDependencyMessage)

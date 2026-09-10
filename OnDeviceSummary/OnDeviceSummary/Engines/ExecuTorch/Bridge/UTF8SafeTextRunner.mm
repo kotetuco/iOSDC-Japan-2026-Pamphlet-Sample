@@ -30,6 +30,10 @@ using namespace executorch::runtime;
   std::unique_ptr<llm::TextLLMRunner> _runner;
 }
 
++ (BOOL)isRuntimeAvailable {
+  return YES;
+}
+
 - (instancetype)initWithModelPath:(NSString *)modelPath
                     tokenizerPath:(NSString *)tokenizerPath
                     specialTokens:(NSArray<NSString *> *)specialTokens {
@@ -150,6 +154,10 @@ static NSError *ODSMissingHeadersError(void) {
 }
 
 @implementation ODSUTF8SafeTextRunner
+
++ (BOOL)isRuntimeAvailable {
+  return NO;
+}
 
 - (instancetype)initWithModelPath:(NSString *)modelPath
                     tokenizerPath:(NSString *)tokenizerPath
