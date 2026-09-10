@@ -46,12 +46,13 @@ struct FoundationModelsSummarizer: SummarizerEngine {
         }
 
         let clock = ContinuousClock()
+        let generationStart = clock.now
 
         for (index, temperature) in Self.attemptTemperatures.enumerated() {
             let attempt = index + 1
             let session = LanguageModelSession(model: .default, instructions: SummaryPrompt.instruction)
             let options = GenerationOptions(temperature: temperature, maximumResponseTokens: 512)
-            let start = clock.now
+            let attemptStart = clock.now
 
             do {
                 let response = try await session.respond(
@@ -59,13 +60,12 @@ struct FoundationModelsSummarizer: SummarizerEngine {
                     generating: FoundationModelsSummaryDraft.self,
                     options: options
                 )
-                let duration = start.duration(to: clock.now)
                 return SummaryOutput(
                     text: SummaryFormatter.string(
                         overview: response.content.overview,
                         keyPoints: response.content.keyPoints
                     ),
-                    totalDuration: duration,
+                    totalDuration: generationStart.duration(to: clock.now),
                     firstTokenDuration: nil,
                     loadDuration: nil,
                     attemptCount: attempt
@@ -75,7 +75,7 @@ struct FoundationModelsSummarizer: SummarizerEngine {
                 if case .decodingFailure = error, hasNextAttempt {
                     logRetry(
                         attempt: attempt,
-                        duration: start.duration(to: clock.now),
+                        duration: attemptStart.duration(to: clock.now),
                         nextTemperature: Self.attemptTemperatures[attempt]
                     )
                     continue

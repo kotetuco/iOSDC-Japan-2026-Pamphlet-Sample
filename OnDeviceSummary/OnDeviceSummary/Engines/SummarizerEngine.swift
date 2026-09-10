@@ -11,7 +11,7 @@ nonisolated struct SummaryOutput: Equatable, Sendable {
     /// 整形済みの要約本文。
     let text: String
 
-    /// 要約処理全体にかかった時間。
+    /// モデルロードを除き、リトライを含む要約生成全体にかかった時間。
     let totalDuration: Duration
 
     /// ストリーミング開始から最初のトークンを受け取るまでの時間。

@@ -133,6 +133,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
             let loadStart = clock.now
             try runner.load()
             let loadDuration = loadStart.duration(to: clock.now)
+            let generationStart = clock.now
 
             var lastAttempt = GenerationAttempt(rawText: "", firstTokenDuration: nil, generationDuration: .zero)
 
@@ -151,7 +152,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
                             overview: parsed.overview,
                             keyPoints: parsed.keyPoints
                         ),
-                        totalDuration: attempt.generationDuration,
+                        totalDuration: generationStart.duration(to: clock.now),
                         firstTokenDuration: attempt.firstTokenDuration,
                         loadDuration: loadDuration,
                         attemptCount: attemptIndex + 1
@@ -166,7 +167,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
             logRawFallback(generationDuration: lastAttempt.generationDuration)
             return SummaryOutput(
                 text: lastAttempt.rawText,
-                totalDuration: lastAttempt.generationDuration,
+                totalDuration: generationStart.duration(to: clock.now),
                 firstTokenDuration: lastAttempt.firstTokenDuration,
                 loadDuration: loadDuration,
                 attemptCount: attemptTemperatures.count,
