@@ -30,10 +30,10 @@ enum SummaryPrompt {
 
 extension Calendar {
     /// 日本語表示と日本標準時を使うグレゴリオ暦。
-    static var japan: Calendar {
+    static let japan: Calendar = {
         var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale(identifier: "ja_JP")
         calendar.timeZone = TimeZone(identifier: "Asia/Tokyo") ?? .current
         return calendar
-    }
+    }()
 }

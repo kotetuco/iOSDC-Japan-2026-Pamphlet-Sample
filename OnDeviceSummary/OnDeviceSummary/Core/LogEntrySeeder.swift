@@ -58,11 +58,11 @@ struct LogEntryRecordDecoder {
     }
 
     /// ISO 8601形式の日時を復元するフォーマッター。
-    private var dateFormatter: ISO8601DateFormatter {
+    private let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         return formatter
-    }
+    }()
 
     /// 必須フィールドの値を返す。
     private func requiredValue(for key: String, in record: [String: String]) throws -> String {
