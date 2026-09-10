@@ -21,6 +21,8 @@ import Foundation
 /// ディレクトリにも並べる。並べないと停止トークンが既定値 0 のままになり、
 /// 生成が終端で止まらない（2026-07-14 調査）。
 enum TokenizerNormalizerWorkaround {
+    private static let workaroundVersion = "v2"
+
     /// normalizer を無効化した tokenizer.json のコピーを返す。
     /// normalizer が元々無い場合や、変換に失敗した場合は元の URL をそのまま返す。
     static func preparedTokenizerURL(from source: URL) -> URL {
@@ -29,10 +31,6 @@ enum TokenizerNormalizerWorkaround {
             guard var json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
                 return source
             }
-            guard let normalizer = json["normalizer"], !(normalizer is NSNull) else {
-                return source
-            }
-
             let destination = destinationURL(for: source)
             try FileManager.default.createDirectory(
                 at: destination.deletingLastPathComponent(),
@@ -43,7 +41,9 @@ enum TokenizerNormalizerWorkaround {
                 return destination
             }
 
-            json["normalizer"] = NSNull()
+            if let normalizer = json["normalizer"], !(normalizer is NSNull) {
+                json["normalizer"] = NSNull()
+            }
             removeUnsupportedLookahead(from: &json)
             let patched = try JSONSerialization.data(withJSONObject: json)
             try patched.write(to: destination, options: .atomic)
@@ -108,7 +108,7 @@ enum TokenizerNormalizerWorkaround {
         // ディレクトリ単位で分けるのは、HFTokenizer の設定ファイル探索が
         // 「トークナイザと同じディレクトリ」固定のため（テストの並列実行でも衝突しない）
         return directory
-            .appendingPathComponent("executorch-tokenizer-\(baseName)", isDirectory: true)
+            .appendingPathComponent("executorch-tokenizer-\(baseName)-\(workaroundVersion)", isDirectory: true)
             .appendingPathComponent("tokenizer.json")
     }
 
