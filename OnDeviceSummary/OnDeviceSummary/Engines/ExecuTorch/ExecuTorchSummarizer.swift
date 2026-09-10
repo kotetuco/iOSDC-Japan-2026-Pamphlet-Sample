@@ -21,8 +21,8 @@ struct ExecuTorchSummarizer: SummarizerEngine {
     // 行末の \ は改行を含めない行継続。文字列の値は 1 行のまま変わらない。
     private static let missingModelMessage = """
     ExecuTorch のモデルファイル（qwen3_1_7b.pte または qwen3_0_6b.pte / tokenizer.json）が見つかりません。\
-    samples/OnDeviceSummary/models/README.md の手順で書き出し、\
-    OnDeviceSummary/Resources/Models/ に配置して再ビルドしてください。
+    OnDeviceSummary/models/README.md の手順で書き出し、\
+    OnDeviceSummary/OnDeviceSummary/Resources/Models/ に配置して再ビルドしてください。
     """
     private static let missingDependencyMessage = """
     ExecuTorch SwiftPM 依存がまだ追加されていません。Xcode で \
