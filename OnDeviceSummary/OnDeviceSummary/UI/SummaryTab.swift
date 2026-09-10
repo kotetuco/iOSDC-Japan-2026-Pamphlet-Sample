@@ -117,7 +117,9 @@ struct SummaryTab: View {
                 guard activeRunID == runID, selectedDate == runDate else { return }
                 setState(.success(output))
             } catch is CancellationError {
-                return
+                guard activeRunID == runID else { return }
+                setState(.idle)
+                summaryTask = nil
             } catch {
                 guard activeRunID == runID, selectedDate == runDate else { return }
                 setState(.failure(error.localizedDescription))
