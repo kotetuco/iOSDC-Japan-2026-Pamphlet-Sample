@@ -1,0 +1,24 @@
+{
+  "originHash" : "3bf0f8b517fabca5c8248050ee62fa5b4c642ffda191889ae877fb6b903115c8",
+  "pins" : [
+    {
+      "identity" : "executorch",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pytorch/executorch.git",
+      "state" : {
+        "branch" : "swiftpm-1.3.1",
+        "revision" : "a4c4949079cc4f3c98dbd770ddb84b204bb9d411"
+      }
+    },
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "ef7d692fc6706e8f5628e26bcafaefa445c58a97",
+        "version" : "0.65.1"
+      }
+    }
+  ],
+  "version" : 3
+}

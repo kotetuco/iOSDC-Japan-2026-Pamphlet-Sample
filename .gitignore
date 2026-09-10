@@ -1,3 +1,6 @@
+# macOS
+.DS_Store
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
@@ -30,6 +33,7 @@ playground.xcworkspace
 # .swiftpm
 
 .build/
+DerivedData/
 
 # CocoaPods
 #
@@ -60,3 +64,12 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# ExecuTorch model artifacts and generated headers
+*.pte
+OnDeviceSummary/OnDeviceSummary/Resources/Models/*
+!OnDeviceSummary/OnDeviceSummary/Resources/Models/.gitkeep
+OnDeviceSummary/third_party/
+
+# Local tooling
+.codex-log/
