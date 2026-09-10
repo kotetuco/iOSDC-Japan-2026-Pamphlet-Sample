@@ -17,7 +17,7 @@ iOSDC Japan 2026 の記事「Foundation Models と ExecuTorch によるオンデ
 
 - macOS
 - Xcode 26.5 以降
-- iOS 26.5 以降の実機またはシミュレータ
+- iOS 26.0 以降の実機またはシミュレータ
 - Foundation Models を使う場合は Apple Intelligence が有効な環境
 
 ### プロジェクトを開く
