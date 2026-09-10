@@ -85,3 +85,9 @@ OnDeviceSummary/scripts/fetch_executorch_headers.sh
 
 ExecuTorch v1.3.1 の C++ トークナイザには、Qwen3 の正規化と UTF-8 境界に関する制限があります。
 アプリ側で回避処理を行うため、`tokenizer.json` を手で編集する必要はありません。
+
+## ライセンス
+
+- [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B)とQwen3-0.6BはApache License 2.0です。
+- ExecuTorchはBSD-3-Clauseライセンスです。詳細はリポジトリ直下の
+  [`THIRD_PARTY_NOTICES.md`](../../THIRD_PARTY_NOTICES.md)を参照してください。

@@ -2,6 +2,9 @@
 //  UTF8SafeTextRunner.mm
 //  OnDeviceSummary
 //
+//  Portions copyright (c) Meta Platforms, Inc. and affiliates.
+//  See THIRD_PARTY_NOTICES.md for the BSD-3-Clause license.
+//
 //  executorch v1.3.1 の extension/llm/apple/ExecuTorchLLM/Exported/
 //  ExecuTorchLLMTextRunner.mm を土台に、トークンコールバックへ渡す前に
 //  UTF8StreamAssembler でバイト列を復元する修正を加えた移植版。

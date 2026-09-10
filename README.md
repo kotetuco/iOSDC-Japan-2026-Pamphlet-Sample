@@ -53,3 +53,5 @@ tokenizer_config.json
 ## ライセンス
 
 このリポジトリのコードは [LICENSE](LICENSE) に従います。
+ExecuTorchを基に変更したコードの著作権表示とライセンスは、
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)を参照してください。
