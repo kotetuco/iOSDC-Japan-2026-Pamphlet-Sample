@@ -3,9 +3,7 @@
 #
 # UTF8SafeTextRunner.mm は上流の ObjC ラッパーが同梱していない
 # C++ ヘッダ（extension/llm/runner ほか）を include するため、
-# ビルド前の実行が必要。Xcode の Run Script フェーズ
-# 「Fetch ExecuTorch Headers」が Sources の前に自動実行する
-# （手動で実行してもよい。取得済みなら即終了する）。
+# ビルド前に手動で実行する。取得済みなら即終了する。
 # ヘッダのみを使用し、ビルドは行わない（シンボルは SwiftPM の
 # executorch_llm xcframework から解決される）。
 set -euo pipefail

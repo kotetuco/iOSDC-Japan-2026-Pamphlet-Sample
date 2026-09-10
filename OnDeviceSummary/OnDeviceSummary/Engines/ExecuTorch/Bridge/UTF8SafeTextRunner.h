@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// UTF8StreamAssembler で完成した文字列だけをコールバックへ渡す。
 ///
 /// ビルドには third_party/executorch の C++ ヘッダが必要
-/// （scripts/fetch_executorch_headers.sh で取得）。未取得の場合は
+/// （scripts/fetch_executorch_headers.sh をビルド前に手動実行）。未取得の場合は
 /// ビルド可能なスタブになり、実行時にエラーを返す。
 NS_SWIFT_NAME(UTF8SafeTextRunner)
 @interface ODSUTF8SafeTextRunner : NSObject
