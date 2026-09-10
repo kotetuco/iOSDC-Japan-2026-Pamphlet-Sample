@@ -1,6 +1,7 @@
 import XCTest
 
-final class OnDeviceSummaryUITests: XCTestCase {
+nonisolated final class OnDeviceSummaryUITests: XCTestCase {
+    @MainActor
     func testAppLaunches() {
         let app = XCUIApplication()
         app.launch()
