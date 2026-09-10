@@ -20,17 +20,13 @@ import Foundation
 /// 仕様（v1.3.1）に対応するため、これらの設定ファイルが元の場所にあればコピー先
 /// ディレクトリにも並べる。並べないと停止トークンが既定値 0 のままになり、
 /// 生成が終端で止まらない（2026-07-14 調査）。
-enum TokenizerNormalizerWorkaround {
+nonisolated enum TokenizerNormalizerWorkaround {
     private static let workaroundVersion = "v2"
 
-    /// normalizer を無効化した tokenizer.json のコピーを返す。
-    /// normalizer が元々無い場合や、変換に失敗した場合は元の URL をそのまま返す。
+    /// ExecuTorch v1.3.1との互換性を補正したtokenizer.jsonのコピーを返す。
+    /// 変換に失敗した場合は元のURLをそのまま返す。
     static func preparedTokenizerURL(from source: URL) -> URL {
         do {
-            let data = try Data(contentsOf: source)
-            guard var json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                return source
-            }
             let destination = destinationURL(for: source)
             try FileManager.default.createDirectory(
                 at: destination.deletingLastPathComponent(),
@@ -41,13 +37,17 @@ enum TokenizerNormalizerWorkaround {
                 return destination
             }
 
+            let data = try Data(contentsOf: source)
+            guard var json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return source
+            }
             if let normalizer = json["normalizer"], !(normalizer is NSNull) {
                 json["normalizer"] = NSNull()
             }
             removeUnsupportedLookahead(from: &json)
             let patched = try JSONSerialization.data(withJSONObject: json)
             try patched.write(to: destination, options: .atomic)
-            print("ExecuTorch tokenizer: disabled broken NFC normalizer -> \(destination.lastPathComponent)")
+            print("ExecuTorch tokenizer: prepared compatibility copy -> \(destination.lastPathComponent)")
             return destination
         } catch {
             print("ExecuTorch tokenizer: normalizer workaround failed (\(error)); using original tokenizer.json")

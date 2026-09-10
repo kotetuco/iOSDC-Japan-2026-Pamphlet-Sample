@@ -82,22 +82,7 @@ struct ExecuTorchSummarizer: SummarizerEngine {
             instruction: SummaryPrompt.instruction,
             input: Self.makeUserContent(from: input)
         )
-        let tokenizerURL = TokenizerNormalizerWorkaround.preparedTokenizerURL(from: resources.tokenizer)
-        // UTF8SafeTextRunner は非 Sendable。生成処理は generate(with:prompt:) の
-        // 実行スレッドに閉じ、キャンセル時に別スレッドから触るのは stop()
-        // （トークンごとに参照されるフラグを立てるだけの操作）のみ、という
-        // 運用で安全を保証しているため nonisolated(unsafe) で受け渡す。
-        nonisolated(unsafe) let runner = UTF8SafeTextRunner(
-            modelPath: resources.model.path,
-            tokenizerPath: tokenizerURL.path,
-            specialTokens: []
-        )
-
-        return try await withTaskCancellationHandler {
-            try await Self.generate(with: runner, prompt: prompt)
-        } onCancel: {
-            runner.stop()
-        }
+        return try await Self.generate(resources: resources, prompt: prompt)
         #else
         _ = resources
         throw SummaryEngineError(message: Self.missingDependencyMessage)
@@ -112,12 +97,37 @@ struct ExecuTorchSummarizer: SummarizerEngine {
         let generationDuration: Duration
     }
 
-    /// モデルのロードと生成（CPU バウンドの同期 API）をメインアクター外で実行する。
+    /// トークナイザ準備、モデルのロード、生成をメインアクター外で実行する。
     @concurrent
     private static func generate(
-        with runner: UTF8SafeTextRunner,
+        resources: (model: URL, tokenizer: URL),
         prompt: String
     ) async throws -> SummaryOutput {
+        try Task.checkCancellation()
+        let tokenizerURL = TokenizerNormalizerWorkaround.preparedTokenizerURL(from: resources.tokenizer)
+        try Task.checkCancellation()
+
+        // UTF8SafeTextRunner は非 Sendable。生成処理はこの @concurrent 関数に閉じ、
+        // キャンセル時に別スレッドから触るのは stop()（トークンごとに参照される
+        // フラグを立てるだけの操作）のみ、という運用で安全を保証する。
+        nonisolated(unsafe) let runner = UTF8SafeTextRunner(
+            modelPath: resources.model.path,
+            tokenizerPath: tokenizerURL.path,
+            specialTokens: []
+        )
+
+        return try await withTaskCancellationHandler {
+            try performGeneration(with: runner, prompt: prompt)
+        } onCancel: {
+            runner.stop()
+        }
+    }
+
+    /// 準備済みランナーで同期的なモデルロードと生成を行う。
+    nonisolated private static func performGeneration(
+        with runner: UTF8SafeTextRunner,
+        prompt: String
+    ) throws -> SummaryOutput {
         do {
             let clock = ContinuousClock()
             let loadStart = clock.now

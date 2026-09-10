@@ -25,4 +25,23 @@ struct TokenizerNormalizerWorkaroundTests {
         let regex = try #require(pattern["Regex"] as? String)
         #expect(!regex.contains("(?!"))
     }
+
+    @Test func reusesFreshCacheBeforeParsingSource() throws {
+        let source = FileManager.default.temporaryDirectory
+            .appendingPathComponent("tokenizer-\(UUID().uuidString).json")
+        try #"{"normalizer":{"type":"NFC"}}"#.write(to: source, atomically: true, encoding: .utf8)
+        defer { try? FileManager.default.removeItem(at: source) }
+
+        let prepared = TokenizerNormalizerWorkaround.preparedTokenizerURL(from: source)
+        defer { try? FileManager.default.removeItem(at: prepared.deletingLastPathComponent()) }
+        try "invalid json".write(to: source, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes(
+            [.modificationDate: Date(timeIntervalSinceNow: -60)],
+            ofItemAtPath: source.path
+        )
+
+        let reused = TokenizerNormalizerWorkaround.preparedTokenizerURL(from: source)
+
+        #expect(reused == prepared)
+    }
 }
